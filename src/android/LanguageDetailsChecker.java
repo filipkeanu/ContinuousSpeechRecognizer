@@ -1,4 +1,4 @@
-package com.latin.continuoussr;
+package pro.drew.continuoussr;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.latin.continuoussr;
+package pro.drew.continuoussr;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -40,12 +40,14 @@ public class ContinuousSpeechRecognizer extends CordovaPlugin {
     private Intent intent;
     private AudioManager mAudioManager;
     private int mStreamVolume = 0;
+    protected JSONArray arguments;
 
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
         Boolean isValidAction = true;
+        this.arguments = args;
         this.callbackContext = callbackContext;
         if ("startRecognize".equals(action)) {
-            startSpeechRecognitionActivity(args);     
+            startSpeechRecognitionActivity(arguments);
         } else if ("getSupportedLanguages".equals(action)) {
             getSupportedLanguages();
         } else {
@@ -187,7 +189,12 @@ public class ContinuousSpeechRecognizer extends CordovaPlugin {
             if(AppStatus.isActivityVisible()) {
                 cordova.getActivity().runOnUiThread(new Runnable() {
                     public void run() {
-                        sr.startListening(intent);
+                        if(sr != null) {
+                            sr.cancel();
+                            sr.destroy();
+                            sr = null;
+                            startSpeechRecognitionActivity(arguments);
+                        }
                     }
                 });
             }
