@@ -50,13 +50,26 @@ public class ContinuousSpeechRecognizer extends CordovaPlugin {
             startSpeechRecognitionActivity(arguments);
         } else if ("getSupportedLanguages".equals(action)) {
             getSupportedLanguages();
+        } else if ("pauseRecognizer".equals(action)) {           // filipkeanu added
+            pauseRecognizer();                                   // filipkeanu added
+        } else if ("resumeRecognizer".equals(action)) {          // filipkeanu added
+            resumeRecognizer();                                  // filipkeanu added
         } else {
             this.callbackContext.error("Unknown action: " + action);
             isValidAction = false;
         }       
         return isValidAction;
     }
-
+    
+    private void pauseRecognizer() {                             // filipkeanu added
+        this.onPause(true);                                      // filipkeanu added
+    }                                                            // filipkeanu added
+         
+    private void resumeRecognizer() {                            // filipkeanu added
+        this.onResume(true);                                     // filipkeanu added
+    }                                                            // filipkeanu added
+              
+              
     private void getSupportedLanguages() {
         if (languageDetailsChecker == null){
             languageDetailsChecker = new LanguageDetailsChecker(callbackContext);
